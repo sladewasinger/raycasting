@@ -238,9 +238,13 @@ function loop() {
             ],
             color: 0xf8f5d8,
             alpha: 1,
+            blur: true
         });
         renderer.draw([triangle]);
     }
+
+    // create mask and blur it
+
 
     renderer.draw([lightSource]);
     if (false) {

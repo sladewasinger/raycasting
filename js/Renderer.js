@@ -8,6 +8,12 @@ export class Renderer {
         this.container = container;
         this.graphics = new PIXI.Graphics();
         this.container.addChild(this.graphics);
+
+        this.container2 = new PIXI.Container();
+        this.graphics2 = new PIXI.Graphics();
+        this.container2.addChild(this.graphics2);
+        this.container.addChild(this.container2);
+        this.container2.filters = [new PIXI.filters.BlurFilter(25, 25)];
     }
 
     draw(shapes = []) {
@@ -22,16 +28,27 @@ export class Renderer {
                 this.graphics.moveTo(shape.x1, shape.y1);
                 this.graphics.lineTo(shape.x2, shape.y2);
             } else if (shape instanceof Polygon) {
-                this.graphics.moveTo(shape.points[0].x, shape.points[0].y);
-                for (const point of shape.points.slice(1)) {
-                    this.graphics.lineTo(point.x, point.y);
+                if (shape.blur) {
+                    this.graphics2.lineStyle(1, shape.lineColor || shape.color, shape.alpha || 1);
+                    this.graphics2.beginFill(shape.color, shape.alpha || 1);
+                    this.graphics2.moveTo(shape.points[0].x, shape.points[0].y);
+                    for (const point of shape.points.slice(1)) {
+                        this.graphics2.lineTo(point.x, point.y);
+                    }
+                    this.graphics2.lineTo(shape.points[0].x, shape.points[0].y);
+                } else {
+                    this.graphics.moveTo(shape.points[0].x, shape.points[0].y);
+                    for (const point of shape.points.slice(1)) {
+                        this.graphics.lineTo(point.x, point.y);
+                    }
+                    this.graphics.lineTo(shape.points[0].x, shape.points[0].y);
                 }
-                this.graphics.lineTo(shape.points[0].x, shape.points[0].y);
             }
         }
     }
 
     clear() {
         this.graphics.clear();
+        this.graphics2.clear();
     }
 }
