@@ -9,8 +9,7 @@ export class Renderer {
         this.container.addChild(this.graphics);
     }
 
-    draw2(shapes = []) {
-        this.graphics.clear();
+    draw(shapes = []) {
         for (const shape of shapes) {
             this.graphics.lineStyle(1, shape.color);
             this.graphics.beginFill(shape.color);
@@ -23,5 +22,9 @@ export class Renderer {
                 this.graphics.lineTo(shape.x2, shape.y2);
             }
         }
+    }
+
+    clear() {
+        this.graphics.clear();
     }
 }

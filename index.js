@@ -18,7 +18,7 @@ const rect1 = new Rectangle({
     y: 100,
     width: 100,
     height: 100,
-    color: 0xff0000,
+    color: 0xaa0011,
 }, app.stage);
 
 const rect2 = new Rectangle({
@@ -58,15 +58,13 @@ window.addEventListener('mousemove', mouseMove);
 const renderer = new Renderer(app.stage);
 
 function loop() {
-    // rect1.draw();
-    // rect2.draw();
-    // circle.draw();
+    renderer.clear();
+
     lightSource.x = mousePos.x;
     lightSource.y = mousePos.y;
-    // lightSource.draw();
 
-    const vertexes = [...rect1.points];
-    const rays = vertexes.map(vertex => {
+    const vertexes = [...rect1.points, ...rect2.points, ...circle.points];
+    let rays = vertexes.map(vertex => {
         const ray = new Line({
             x1: lightSource.x,
             y1: lightSource.y,
@@ -76,13 +74,68 @@ function loop() {
         });
         return ray;
     });
-    rays.forEach((ray, index) => {
-        ray.x1 = lightSource.x;
-        ray.y1 = lightSource.y;
-        ray.x2 = vertexes[index].x;
-        ray.y2 = vertexes[index].y;
+    const boundingRect = new Rectangle({
+        x: 0,
+        y: 0,
+        width: 800,
+        height: 800,
     });
-    const shapes = [rect1, rect2, circle, lightSource, ...rays];
-    renderer.draw2(shapes);
+    rays.push(new Line({
+        x1: lightSource.x,
+        y1: lightSource.y,
+        x2: boundingRect.x,
+        y2: boundingRect.y,
+        color: 0xffffff,
+    }));
+    rays.push(new Line({
+        x1: lightSource.x,
+        y1: lightSource.y,
+        x2: boundingRect.x + boundingRect.width,
+        y2: boundingRect.y,
+        color: 0xffffff,
+    }));
+    rays.push(new Line({
+        x1: lightSource.x,
+        y1: lightSource.y,
+        x2: boundingRect.x,
+        y2: boundingRect.y + boundingRect.height,
+        color: 0xffffff,
+    }));
+    rays.push(new Line({
+        x1: lightSource.x,
+        y1: lightSource.y,
+        x2: boundingRect.x + boundingRect.width,
+        y2: boundingRect.y + boundingRect.height,
+        color: 0xffffff,
+    }));
+
+    renderer.draw([rect1, rect2, circle, lightSource]);
+
+    for (const ray of rays) {
+        const intersectionPoints = [];
+        for (const shape of [rect1, rect2]) {
+            const vertices = [...shape.points];
+            for (let i = 0; i < vertices.length; i++) {
+                const vertex1 = vertices[i];
+                const vertex2 = vertices[(i + 1) % vertices.length];
+                const line = new Line({
+                    x1: vertex1.x,
+                    y1: vertex1.y,
+                    x2: vertex2.x,
+                    y2: vertex2.y,
+                    color: 0xff0000,
+                });
+                renderer.draw([line]);
+                const intersection = ray.intersect(line);
+                if (!!intersection) {
+                    intersectionPoints.push(intersection);
+                    ray.x2 = intersection.x; // Indirectly sort the ray by adjusting it's end point every time
+                    ray.y2 = intersection.y;
+                }
+            }
+        }
+    }
+
+    renderer.draw(rays);
 }
 app.ticker.add(loop);
