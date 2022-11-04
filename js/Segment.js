@@ -15,16 +15,6 @@ export class Segment {
         return Math.atan2(this.y2 - this.y1, this.x2 - this.x1);
     }
 
-    get normal() {
-        const angle = this.angle + Math.PI / 2;
-        return new Segment({
-            x1: this.x1,
-            y1: this.y1,
-            x2: this.x1 + Math.cos(angle),
-            y2: this.y1 + Math.sin(angle),
-        });
-    }
-
     extend(length) {
         const angle = this.angle;
         return new Segment({
@@ -71,21 +61,5 @@ export class Segment {
         let y = y1 + ua * (y2 - y1)
 
         return { x, y }
-    }
-
-    intersectsRectangle(rectangle) {
-        const points = rectangle.points;
-        for (let i = 0; i < points.length; i++) {
-            const line = new Segment({
-                x1: points[i].x,
-                y1: points[i].y,
-                x2: points[(i + 1) % points.length].x,
-                y2: points[(i + 1) % points.length].y,
-            });
-            if (this.intersect(line)) {
-                return true;
-            }
-        }
-        return false;
     }
 }
