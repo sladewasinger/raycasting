@@ -1,2 +1,3 @@
 # raytracing
-A raytracing POC
+A raytracing POC  
+https://sladewasinger.github.io/raytracing/
