@@ -7,6 +7,22 @@ export class Segment {
         this.color = color;
     }
 
+    draw(graphics) {
+        graphics.lineStyle(1, this.color);
+        graphics.moveTo(this.x1, this.y1);
+        graphics.lineTo(this.x2, this.y2);
+    }
+
+    clone() {
+        return new Segment({
+            x1: this.x1,
+            y1: this.y1,
+            x2: this.x2,
+            y2: this.y2,
+            color: this.color,
+        });
+    }
+
     get length() {
         return Math.sqrt(Math.pow(this.x2 - this.x1, 2) + Math.pow(this.y2 - this.y1, 2));
     }
