@@ -1,10 +1,7 @@
 body {
     background-color: #101010;
-    cursor: none;
 }
 
 #canvas {
-    display: block;
-    margin: 0 auto;
     cursor: none;
 }
