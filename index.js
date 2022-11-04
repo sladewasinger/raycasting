@@ -133,7 +133,6 @@ container.addChild(layer3);
 
 const maskLayer = new PIXI.Graphics();
 
-
 function loop() {
     layer1.clear();
     layer2.clear();
@@ -290,17 +289,12 @@ function loop() {
                 }
             }
         }
-        intersectionPoints = intersectionPoints.sort((a, b) => {
+        const closestTwoPoints = intersectionPoints.sort((a, b) => {
             const distanceA = Math.sqrt(Math.pow(a.x - ray.x1, 2) + Math.pow(a.y - ray.y1, 2));
             const distanceB = Math.sqrt(Math.pow(b.x - ray.x1, 2) + Math.pow(b.y - ray.y1, 2));
             return distanceA - distanceB;
         }).slice(0, 2);
-
-        const furthestIntersection = intersectionPoints.sort((a, b) => {
-            const distanceA = Math.sqrt(Math.pow(a.x - ray.x1, 2) + Math.pow(a.y - ray.y1, 2));
-            const distanceB = Math.sqrt(Math.pow(b.x - ray.x1, 2) + Math.pow(b.y - ray.y1, 2));
-            return distanceB - distanceA;
-        })[0];
+        const furthestIntersection = closestTwoPoints[1];
         if (!!furthestIntersection) {
             let segment = new Segment({
                 x1: ray.x1,
