@@ -1,4 +1,4 @@
-export class Line {
+export class Segment {
     constructor({ x1, y1, x2, y2, color }) {
         this.x1 = x1;
         this.y1 = y1;
@@ -17,7 +17,7 @@ export class Line {
 
     get normal() {
         const angle = this.angle + Math.PI / 2;
-        return new Line({
+        return new Segment({
             x1: this.x1,
             y1: this.y1,
             x2: this.x1 + Math.cos(angle),
@@ -25,16 +25,18 @@ export class Line {
         });
     }
 
-    scale(factor) {
-        const length = this.length * factor;
-        return new Line({
+    extend(length) {
+        const angle = this.angle;
+        return new Segment({
             x1: this.x1,
             y1: this.y1,
-            x2: this.x1 + Math.cos(this.angle) * length,
-            y2: this.y1 + Math.sin(this.angle) * length,
+            x2: this.x1 + Math.cos(angle) * length,
+            y2: this.y1 + Math.sin(angle) * length,
+            color: this.color,
         });
     }
 
+    // http://paulbourke.net/geometry/pointlineplane/javascript.txt
     intersect(segment) {
         const x1 = this.x1;
         const y1 = this.y1;
@@ -74,7 +76,7 @@ export class Line {
     intersectsRectangle(rectangle) {
         const points = rectangle.points;
         for (let i = 0; i < points.length; i++) {
-            const line = new Line({
+            const line = new Segment({
                 x1: points[i].x,
                 y1: points[i].y,
                 x2: points[(i + 1) % points.length].x,
