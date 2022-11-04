@@ -180,32 +180,16 @@ function loop() {
         height: 800,
     });
     rays.push(new Segment({
-        x1: lightSource.x,
-        y1: lightSource.y,
-        x2: boundingRect.x,
-        y2: boundingRect.y,
-        color: 0xffffff,
+        x1: lightSource.x, y1: lightSource.y, x2: boundingRect.x, y2: boundingRect.y, color: 0xffffff,
     }));
     rays.push(new Segment({
-        x1: lightSource.x,
-        y1: lightSource.y,
-        x2: boundingRect.x + boundingRect.width,
-        y2: boundingRect.y,
-        color: 0xffffff,
+        x1: lightSource.x, y1: lightSource.y, x2: boundingRect.x + boundingRect.width, y2: boundingRect.y, color: 0xffffff,
     }));
     rays.push(new Segment({
-        x1: lightSource.x,
-        y1: lightSource.y,
-        x2: boundingRect.x,
-        y2: boundingRect.y + boundingRect.height,
-        color: 0xffffff,
+        x1: lightSource.x, y1: lightSource.y, x2: boundingRect.x, y2: boundingRect.y + boundingRect.height, color: 0xffffff,
     }));
     rays.push(new Segment({
-        x1: lightSource.x,
-        y1: lightSource.y,
-        x2: boundingRect.x + boundingRect.width,
-        y2: boundingRect.y + boundingRect.height,
-        color: 0xffffff,
+        x1: lightSource.x, y1: lightSource.y, x2: boundingRect.x + boundingRect.width, y2: boundingRect.y + boundingRect.height, color: 0xffffff,
     }));
 
     renderer.draw(shapes);
