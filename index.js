@@ -9,7 +9,7 @@ export const app = new PIXI.Application({
     width: 800,
     height: 800,
     backgroundColor: 0x000000,
-    resolution: window.devicePixelRatio || 1,
+    resolution: 1,
     view: canvas,
 });
 
