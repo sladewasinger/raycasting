@@ -13,6 +13,9 @@ export const app = new PIXI.Application({
     view: canvas,
 });
 
+console.log(app.renderer.plugins);
+//app.renderer.plugins.interaction.cursorStyles.default = 'crosshair'
+
 const container = new PIXI.Container();
 app.stage.addChild(container);
 container.cursor = 'crosshair';
@@ -125,7 +128,7 @@ const layer1 = new PIXI.Graphics();
 container.addChild(layer1);
 
 const layer2 = new PIXI.Graphics();
-layer2.filters = [new PIXI.filters.BlurFilter(5, 5)];
+layer2.filters = [new PIXI.filters.BlurFilter(2, 2)];
 container.addChild(layer2);
 
 const layer3 = new PIXI.Graphics();
@@ -191,7 +194,6 @@ function loop() {
         // leftRay.draw(layer3);
         // rightRay.draw(layer3);
     }
-    //rays = [...rays, ...secondaryRays];
 
     // add bounding box rays
     const boundingRect = new Rectangle({
@@ -265,7 +267,6 @@ function loop() {
     }
 
     // mask out hidden shapes
-    // check if ray intersects shape
     const overlappingSegments = [];
 
     for (const ray of secondaryRaysCopy) {
@@ -320,6 +321,7 @@ function loop() {
         return angleB - angleA;
     });
 
+    // draw overlapping segments to mask
     const overlappingTriangles = [];
     for (let i = 0; i < overlappingSegments.length; i++) {
         let color = 0xffff00;
