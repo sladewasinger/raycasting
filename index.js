@@ -14,7 +14,11 @@ export const app = new PIXI.Application({
 });
 
 console.log(app.renderer.plugins);
-//app.renderer.plugins.interaction.cursorStyles.default = 'crosshair'
+app.renderer.plugins.interaction.cursorStyles.default = 'none'
+app.renderer.plugins.interaction.autoPreventDefault = false;
+app.renderer.plugins.interaction.touchAction = 'auto';
+
+canvas.style.touchAction = 'auto';
 
 const container = new PIXI.Container();
 app.stage.addChild(container);
