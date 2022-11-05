@@ -309,27 +309,46 @@ function loop() {
 
     // order overlappingSegments by angle
     overlappingSegments.sort((a, b) => {
-        const angleA = Math.atan2(a.y2 - a.y1, a.x2 - a.x1);
-        const angleB = Math.atan2(b.y2 - b.y1, b.x2 - b.x1);
-        return angleA - angleB;
+        let angleA = Math.atan2(a.y2 - a.y1, a.x2 - a.x1);
+        let angleB = Math.atan2(b.y2 - b.y1, b.x2 - b.x1);
+        if (angleA < 0) {
+            angleA += 2 * Math.PI;
+        }
+        if (angleB < 0) {
+            angleB += 2 * Math.PI;
+        }
+        return angleB - angleA;
     });
 
     const overlappingTriangles = [];
     for (let i = 0; i < overlappingSegments.length; i++) {
+        let color = 0xffff00;
+        if (i === 0) {
+            color = 0x00ff00;
+        } else if (i === overlappingSegments.length - 1) {
+            color = 0xff0000;
+        }
         const ray1 = overlappingSegments[i];
         const ray2 = overlappingSegments[(i + 1) % overlappingSegments.length];
+        const angle = Math.atan2(ray2.y2 - ray2.y1, ray2.x2 - ray2.x1) - Math.atan2(ray1.y2 - ray1.y1, ray1.x2 - ray1.x1);
+        if ((angle < -Math.PI || angle > 0) && i === overlappingSegments.length - 1) { // prevent wrap around bug
+            color = 0xff00ff;
+            continue;
+        }
         const triangle = new Polygon({
             points: [
                 { x: ray1.x1, y: ray1.y1 },
                 { x: ray1.x2, y: ray1.y2 },
                 { x: ray2.x2, y: ray2.y2 },
             ],
-            color: 0xffff00,
-            alpha: 1
+            color: color,
+            alpha: 0.75
         });
         overlappingTriangles.push(triangle);
         triangle.draw(maskLayer);
+        // triangle.draw(layer3);
     }
+
     layer1.mask = maskLayer;
 
     lightSource.draw(layer3)
