@@ -1,6 +1,6 @@
-# raytracing
-A raytracing POC  
-https://sladewasinger.github.io/raytracing/
+# raycasting
+A raycasting POC  
+https://sladewasinger.github.io/raycasting/
 
 # Setup
 Get http-server globally:  
